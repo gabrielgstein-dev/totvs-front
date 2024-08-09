@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { SharedModule } from '../shared/shared.module';
+
 import {
   PoTableModule,
   PoButtonModule,
@@ -20,6 +22,7 @@ import { CustomerListComponent } from './customer-list.component';
     PoButtonModule,
     PoModalModule,
     PoFieldModule,
+    SharedModule,
     RouterModule.forChild([{ path: '', component: CustomerListComponent }]),
   ],
 })
