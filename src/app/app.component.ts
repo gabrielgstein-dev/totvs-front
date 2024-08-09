@@ -17,7 +17,7 @@ import {
     RouterOutlet,
     PoToolbarModule,
     PoMenuModule,
-    PoPageModule
+    PoPageModule,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
