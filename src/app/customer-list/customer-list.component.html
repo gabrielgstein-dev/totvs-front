@@ -1,0 +1,20 @@
+<div class="po-container">
+  <div class="po-row">
+    <div class="po-md-12">
+      <po-input p-label="Filtrar Clientes" [(ngModel)]="filterTerm" placeholder="Nome ou CPF"></po-input>
+    </div>
+  </div>
+  <div class="po-row">
+    <div class="po-md-12">
+      <po-table
+        [p-items]="filteredCustomers"
+        [p-columns]="[
+          { property: 'name', label: 'Nome' },
+          { property: 'cpf', label: 'CPF' },
+          { property: 'contractNumber', label: 'Número do Contrato' },
+          { property: 'status', label: 'Status' }
+        ]">
+      </po-table>
+    </div>
+  </div>
+</div>
