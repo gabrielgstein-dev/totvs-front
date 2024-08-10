@@ -3,6 +3,8 @@ import { PoModalComponent } from '@po-ui/ng-components';
 import { Customer } from '../customer/customer.model';
 import { CustomerService } from '../customer/customer.service';
 import { ContractStatus } from '../shared/contract-status.enum';
+import { formatCpfCnpj } from '../shared/utils/formatCpfCnpj';
+import { TableColumn } from './customer-list.interfaces';
 
 @Component({
   selector: 'app-customer-list',
@@ -13,19 +15,28 @@ export class CustomerListComponent {
   @ViewChild('addCustomerModal')
   addCustomerModal!: PoModalComponent;
 
-  constructor(private customerService: CustomerService) {}
+  columns: TableColumn[];
+  customers: Customer[] = [];
+  newCustomer: Customer = { name: '', cpf_cnpj: '', phone: '' };
+  filterTerm: string = '';
+  status: ContractStatus = '' as ContractStatus;
+
+  constructor(private customerService: CustomerService) {
+    this.columns = [
+      { property: 'name', label: 'Nome' },
+      {
+        property: 'cpf_cnpj',
+        label: 'CPF/CNPJ',
+        type: 'function',
+        function: formatCpfCnpj,
+      },
+      { property: 'phone', label: 'Número do Contrato' },
+    ];
+  }
 
   ngOnInit(): void {
     this.loadCustomers();
   }
-
-  customers: Customer[] = [];
-
-  newCustomer: Customer = { name: '', cpf_cnpj: '', phone: '' };
-
-  filterTerm: string = '';
-
-  status: ContractStatus = '' as ContractStatus;
 
   primaryModalAction = {
     action: () => this.saveCustomer(),
