@@ -3,3 +3,10 @@ export interface Customer {
   cpf_cnpj: string;
   phone: string;
 }
+
+export interface CustomerDTO {
+  name: string;
+  phone: string;
+  cpf?: string;
+  cnpj?: string;
+}

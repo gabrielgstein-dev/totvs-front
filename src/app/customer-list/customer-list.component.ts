@@ -72,12 +72,19 @@ export class CustomerListComponent {
   }
 
   saveCustomer() {
-    if (this.customers) {
-      this.customers.push({ ...this.newCustomer });
-      this.addCustomerModal.close();
-    } else {
-      console.error('A lista de clientes não foi inicializada.');
-    }
+    this.customerService.addCustomer(this.newCustomer).subscribe({
+      next: () => {
+        this.loadCustomers();
+        this.newCustomer = { name: '', cpf_cnpj: '', phone: '' };
+        this.addCustomerModal.close();
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar cliente', error);
+      },
+      complete: () => {
+        console.log('Cliente adicionado com sucesso');
+      },
+    });
   }
 
   closeModal() {
