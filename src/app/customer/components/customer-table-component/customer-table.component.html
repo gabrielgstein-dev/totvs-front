@@ -6,6 +6,7 @@
   <ng-template p-table-cell-template let-column="column" let-row="row">
     <p *ngIf="column.property === 'cpf_cnpj'">{{ formatCpfCnpj(row[column.property]) }}</p>
     <p *ngIf="column.property === 'actions'">
+      <po-button p-icon="po-icon-edit" p-small p-type="default" (p-click)="onEdit(row)"></po-button>
       <po-button p-icon="po-icon-delete" p-small p-type="danger" (p-click)="onDelete(row)"></po-button>
     </p>
   </ng-template>

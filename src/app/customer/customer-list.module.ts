@@ -5,7 +5,7 @@ import { PoModule } from '@po-ui/ng-components';
 
 import { CustomerListComponent } from './customer-list.component';
 import { CustomerTableComponent } from './components/customer-table-component/customer-table.component';
-import { AddCustomerModalComponent } from './components/add-customer-modal/add-customer-modal.component';
+import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { CustomerFilterComponent } from './components/customer-filter/customer-filter.component';
@@ -22,7 +22,7 @@ import { CustomerFilterComponent } from './components/customer-filter/customer-f
     CustomerListComponent,
     CustomerTableComponent,
     CustomerFilterComponent,
-    AddCustomerModalComponent,
+    CustomerModalComponent,
   ],
   exports: [CustomerListComponent],
 })

@@ -1,0 +1,11 @@
+<po-modal #modal p-title="{{ title }}">
+  <form>
+    <po-input p-label="Nome" [(ngModel)]="customer.name" name="name"></po-input>
+    <po-input p-label="CPF/CNPJ" [(ngModel)]="customer.cpf_cnpj" name="cpf_cnpj"></po-input>
+    <po-input p-label="Telefone" [(ngModel)]="customer.phone" name="phone"></po-input>
+  </form>
+  <po-modal-footer>
+    <po-button p-label="Salvar" p-type="primary" (p-click)="onSave()"></po-button>
+    <po-button p-label="Cancelar" p-type="default" (p-click)="onCancel()"></po-button>
+  </po-modal-footer>
+</po-modal>

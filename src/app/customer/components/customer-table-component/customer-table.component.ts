@@ -15,6 +15,12 @@ export class CustomerTableComponent {
 
   @Output() confirmDelete = new EventEmitter<Customer>();
 
+  @Output() edit = new EventEmitter<Customer>();
+
+  onEdit(customer: Customer) {
+    this.edit.emit(customer);
+  }
+
   onDelete(customer: Customer) {
     this.confirmDelete.emit(customer);
   }

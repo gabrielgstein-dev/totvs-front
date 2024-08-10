@@ -1,22 +1,27 @@
-import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  Output,
+  EventEmitter,
+  Input,
+} from '@angular/core';
 import { PoModalComponent } from '@po-ui/ng-components';
 import { Customer } from '../../models/customer.model';
 
 @Component({
-  selector: 'app-add-customer-modal',
-  templateUrl: './add-customer-modal.component.html',
+  selector: 'app-customer-modal',
+  templateUrl: './customer-modal.component.html',
   styleUrls: [],
 })
-export class AddCustomerModalComponent {
+export class CustomerModalComponent {
   @ViewChild(PoModalComponent, { static: true }) modal!: PoModalComponent;
 
+  @Input() customer: Customer = { name: '', cpf_cnpj: '', phone: '' };
+  @Input() title: string = 'Adicionar Cliente';
   @Output() save = new EventEmitter<Customer>();
   @Output() cancel = new EventEmitter<void>();
 
-  newCustomer: Customer = { name: '', cpf_cnpj: '', phone: '' };
-
   open() {
-    this.newCustomer = { name: '', cpf_cnpj: '', phone: '' };
     this.modal.open();
   }
 
@@ -25,7 +30,7 @@ export class AddCustomerModalComponent {
   }
 
   onSave() {
-    this.save.emit(this.newCustomer);
+    this.save.emit(this.customer);
     this.close();
   }
 

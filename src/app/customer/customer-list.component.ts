@@ -4,7 +4,7 @@ import { CustomerService } from './services/customer.service';
 import { Customer } from './models/customer.model';
 import { ContractStatus } from '../shared/contract-status.enum';
 import { formatCpfCnpj } from '../shared/utils/formatCpfCnpj';
-import { AddCustomerModalComponent } from './components/add-customer-modal/add-customer-modal.component';
+import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
 import { ConfirmModalComponent } from '../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
@@ -13,13 +13,13 @@ import { ConfirmModalComponent } from '../shared/components/confirm-modal/confir
   styleUrls: ['./customer-list.component.css'],
 })
 export class CustomerListComponent {
-  @ViewChild('addCustomerModal') addCustomerModal!: AddCustomerModalComponent;
+  @ViewChild('customerModal') customerModal!: CustomerModalComponent;
   @ViewChild('confirmDeleteModal') confirmDeleteModal!: ConfirmModalComponent;
 
   customers: Customer[] = [];
   filteredCustomers: Customer[] = [];
   filterTerm: string = '';
-  newCustomer: Customer = { name: '', cpf_cnpj: '', phone: '' };
+  selectedCustomer: Customer = { name: '', cpf_cnpj: '', phone: '' };
   status: ContractStatus = ContractStatus.ON_SCHEDULE;
   statusComboOptions = [
     { label: 'Em Atraso', value: ContractStatus.PAST_DUE },
@@ -40,16 +40,6 @@ export class CustomerListComponent {
   ];
 
   formatCpfCnpj = formatCpfCnpj;
-
-  primaryModalAction = {
-    action: () => this.saveCustomer(),
-    label: 'Salvar',
-  };
-
-  cancelModalAction = {
-    action: () => this.addCustomerModal.close(),
-    label: 'Cancelar',
-  };
 
   constructor(private customerService: CustomerService) {}
 
@@ -73,14 +63,27 @@ export class CustomerListComponent {
   }
 
   openAddCustomerModal() {
-    this.newCustomer = { name: '', cpf_cnpj: '', phone: '' };
-    this.addCustomerModal.open();
+    this.selectedCustomer = { name: '', cpf_cnpj: '', phone: '' };
+    this.customerModal.title = 'Adicionar Cliente';
+    this.customerModal.open();
   }
 
-  saveCustomer() {
-    this.customerService.addCustomer(this.newCustomer).subscribe(() => {
-      this.loadCustomers();
-    });
+  openEditCustomerModal(customer: Customer) {
+    this.selectedCustomer = { ...customer };
+    this.customerModal.title = 'Editar Cliente';
+    this.customerModal.open();
+  }
+
+  saveCustomer(customer: Customer) {
+    if (customer.id) {
+      this.customerService.updateCustomer(customer).subscribe(() => {
+        this.loadCustomers();
+      });
+    } else {
+      this.customerService.addCustomer(customer).subscribe(() => {
+        this.loadCustomers();
+      });
+    }
   }
 
   openConfirmDeleteModal(customer: Customer) {
