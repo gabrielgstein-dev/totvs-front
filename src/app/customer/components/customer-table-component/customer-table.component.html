@@ -1,0 +1,13 @@
+<po-table
+  [p-hide-columns-manager]="true"
+  [p-items]="customers"
+  [p-columns]="columns">
+
+  <ng-template p-table-cell-template let-column="column" let-row="row">
+    <p *ngIf="column.property === 'cpf_cnpj'">{{ formatCpfCnpj(row[column.property]) }}</p>
+    <p *ngIf="column.property === 'actions'">
+      <po-button p-icon="po-icon-delete" p-small p-type="danger" (p-click)="onDelete(row)"></po-button>
+    </p>
+  </ng-template>
+
+</po-table>

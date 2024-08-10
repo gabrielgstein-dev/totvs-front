@@ -8,6 +8,7 @@ import {
   PoPageModule,
   PoToolbarModule,
 } from '@po-ui/ng-components';
+import { CustomerListModule } from './customer/customer-list.module';
 
 @Component({
   selector: 'app-root',
@@ -18,9 +19,10 @@ import {
     PoToolbarModule,
     PoMenuModule,
     PoPageModule,
+    CustomerListModule,
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: [],
 })
 export class AppComponent {
   readonly menus: Array<PoMenuItem> = [

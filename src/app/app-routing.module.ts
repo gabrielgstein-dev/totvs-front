@@ -6,7 +6,7 @@ export const routes: Routes = [
   {
     path: 'customers',
     loadChildren: () =>
-      import('./customer-list/customer-list.module').then(
+      import('./customer/customer-list.module').then(
         (m) => m.CustomerListModule
       ),
   },

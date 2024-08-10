@@ -1,28 +1,20 @@
 import { NgModule } from '@angular/core';
-import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { PoButtonModule, PoModule } from '@po-ui/ng-components';
-import { CommonModule } from '@angular/common';
-
-import { ConfirmModalComponent } from './shared/components/confirm-modal/confirm-modal.component';
-import { CustomerListComponent } from './customer-list/customer-list.component';
+import { FormsModule } from '@angular/forms';
+import { PoModule } from '@po-ui/ng-components';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import { CustomerListModule } from './customer/customer-list.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [AppComponent, ConfirmModalComponent, CustomerListComponent],
   imports: [
     BrowserModule,
+    FormsModule,
     PoModule,
-    AppRoutingModule,
-    PoButtonModule,
-    CommonModule,
+    CustomerListModule,
+    SharedModule,
   ],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
-  bootstrap: [AppComponent],
+  providers: [],
 })
 export class AppModule {}
