@@ -12,7 +12,8 @@
   <app-customer-contract-modal
     #contractModal
     [customer]="selectedCustomer"
-    (saveContract)="saveContract($event)">
+    (saveContract)="saveContract($event)"
+    (cancelContract)="cancelContract($event)">
   </app-customer-contract-modal>
 
   <app-confirm-modal #confirmDeleteModal></app-confirm-modal>

@@ -21,4 +21,10 @@ export class ContractService {
       contract
     );
   }
+
+  deleteContract(customerId: number, contractId: number): Observable<Contract> {
+    return this.http.delete<Contract>(
+      `${this.apiUrl}/${contractId}/user/${customerId}`
+    );
+  }
 }

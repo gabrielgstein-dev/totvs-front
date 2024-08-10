@@ -30,6 +30,10 @@ export class CustomerContractModalComponent {
     customerId: number;
     contract: Contract;
   }>();
+  @Output() cancelContract = new EventEmitter<{
+    customerId: number;
+    contractId: number;
+  }>();
 
   contractStatus = {
     label: 'Dentro do Prazo',
@@ -62,6 +66,10 @@ export class CustomerContractModalComponent {
           this.originalContract.acquisitionDate &&
         this.contract.value === this.originalContract.value &&
         this.contract.status === this.originalContract.status);
+  }
+
+  hasContractDisabled() {
+    return this.originalContract.status === ContractStatusEnum.CANCELED;
   }
 
   resetContract() {
@@ -103,6 +111,11 @@ export class CustomerContractModalComponent {
   }
 
   onCancel() {
+    if (!this.customer?.id || !this.contract?.id) return;
+    this.cancelContract.emit({
+      contractId: this.contract.id,
+      customerId: this.customer.id,
+    });
     this.close();
   }
 }

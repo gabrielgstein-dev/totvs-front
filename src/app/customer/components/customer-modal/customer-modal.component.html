@@ -5,6 +5,6 @@
     <po-input p-label="Telefone" [(ngModel)]="customer.phone" name="phone"></po-input>
   </form>
   <po-modal-footer>
-    <po-button p-label="Salvar" p-kind="primary" (p-click)="onSave()"></po-button>
+    <po-button [p-label]="customer.id ? 'Alterar' : 'Salvar'" p-kind="primary" (p-click)="onSave()"></po-button>
   </po-modal-footer>
 </po-modal>

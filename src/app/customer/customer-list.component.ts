@@ -112,6 +112,19 @@ export class CustomerListComponent {
     }
   }
 
+  cancelContract(params: { customerId: number; contractId: number }) {
+    if (!params.customerId || !params.contractId) {
+      console.error('ID do cliente ou contrato não encontrado');
+      return;
+    }
+
+    this.contractService
+      .deleteContract(params.customerId, params.contractId)
+      .subscribe(() => {
+        this.loadCustomers();
+      });
+  }
+
   openConfirmDeleteModal(customer: Customer) {
     this.confirmDeleteModal.confirmLabel = 'Excluir';
     this.confirmDeleteModal.danger = true;

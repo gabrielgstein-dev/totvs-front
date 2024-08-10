@@ -25,7 +25,9 @@
     </po-number>
   </form>
   <po-modal-footer>
-    <po-button [p-disabled]="saveDisabled" p-label="Salvar" p-type="primary" (p-click)="onSave()"></po-button>
-    <po-button p-label="Cancelar" p-type="default" (p-click)="onCancel()"></po-button>
+    <po-button [p-disabled]="saveDisabled" [p-label]="contract.id ? 'Alterar' : 'Salvar'" p-kind="primary" (p-click)="onSave()"></po-button>
+    <ng-container *ngIf="!!contract.id">
+      <po-button [p-disabled]="hasContractDisabled()" p-label="Cancelar contrato" p-kind="primary" p-danger p-type="danger" (p-click)="onCancel()"></po-button>
+    </ng-container>
   </po-modal-footer>
 </po-modal>
