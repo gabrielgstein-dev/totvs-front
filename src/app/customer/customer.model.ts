@@ -1,12 +1,14 @@
 export interface Customer {
+  id?: number;
   name: string;
-  cpf_cnpj: string;
   phone: string;
+  cpf_cnpj: string;
 }
 
 export interface CustomerDTO {
+  id: number;
   name: string;
   phone: string;
-  cpf?: string;
-  cnpj?: string;
+  cpf: string | null;
+  cnpj: string | null;
 }
