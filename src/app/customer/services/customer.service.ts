@@ -40,6 +40,7 @@ export class CustomerService {
       name: customer.name,
       phone: customer.phone,
       cpf_cnpj: customer.cpf || customer.cnpj || '',
+      contracts: customer.contracts || [],
     };
   }
 }

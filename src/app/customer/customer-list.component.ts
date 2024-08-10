@@ -1,11 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { PoTableColumn } from '@po-ui/ng-components';
 import { CustomerService } from './services/customer.service';
+import { ContractService } from './services/contract.service';
 import { Customer } from './models/customer.model';
-import { ContractStatus } from '../shared/contract-status.enum';
-import { formatCpfCnpj } from '../shared/utils/formatCpfCnpj';
+import { Contract } from './models/contract.model';
 import { CustomerModalComponent } from './components/customer-modal/customer-modal.component';
+import { CustomerContractModalComponent } from './components/customer-contract-modal/customer-contract-modal.component'; // Novo import
 import { ConfirmModalComponent } from '../shared/components/confirm-modal/confirm-modal.component';
+import { formatCpfCnpj } from '../shared/utils/formatCpfCnpj';
+import { ContractStatusEnum } from '../shared/contract-status';
 
 @Component({
   selector: 'app-customer-list',
@@ -14,34 +17,26 @@ import { ConfirmModalComponent } from '../shared/components/confirm-modal/confir
 })
 export class CustomerListComponent {
   @ViewChild('customerModal') customerModal!: CustomerModalComponent;
+  @ViewChild('contractModal') contractModal!: CustomerContractModalComponent;
   @ViewChild('confirmDeleteModal') confirmDeleteModal!: ConfirmModalComponent;
 
   customers: Customer[] = [];
-  filteredCustomers: Customer[] = [];
-  filterTerm: string = '';
   selectedCustomer: Customer = { name: '', cpf_cnpj: '', phone: '' };
-  status: ContractStatus = ContractStatus.ON_SCHEDULE;
-  statusComboOptions = [
-    { label: 'Em Atraso', value: ContractStatus.PAST_DUE },
-    { label: 'Dentro do Prazo', value: ContractStatus.ON_SCHEDULE },
-    { label: 'Pago', value: ContractStatus.PAID_IN_FULL },
-    { label: 'Cancelado', value: ContractStatus.CANCELED },
-  ];
-
-  columns: PoTableColumn[] = [
-    { property: 'name', label: 'Nome' },
-    {
-      property: 'cpf_cnpj',
-      label: 'CPF/CNPJ',
-      type: 'cellTemplate',
-    },
-    { property: 'phone', label: 'Telefone' },
-    { property: 'actions', label: 'Ações', type: 'cellTemplate' },
-  ];
+  selectedContract: Contract = {
+    acquisitionDate: '',
+    value: 0,
+    number: '',
+    status: ContractStatusEnum.ON_SCHEDULE,
+  };
+  filterTerm: string = '';
+  filteredCustomers: Customer[] = [];
 
   formatCpfCnpj = formatCpfCnpj;
 
-  constructor(private customerService: CustomerService) {}
+  constructor(
+    private customerService: CustomerService,
+    private contractService: ContractService
+  ) {}
 
   ngOnInit(): void {
     this.loadCustomers();
@@ -74,15 +69,46 @@ export class CustomerListComponent {
     this.customerModal.open();
   }
 
-  saveCustomer(customer: Customer) {
-    if (customer.id) {
-      this.customerService.updateCustomer(customer).subscribe(() => {
-        this.loadCustomers();
-      });
+  openAddContractModal(customer: Customer) {
+    if (!customer.id) return;
+
+    this.selectedCustomer = { ...customer };
+    this.contractModal.title = `Adicionar contrato para ${customer.name}`;
+
+    if (customer?.contracts?.length) {
+      this.contractModal.title = `Editar o contrato de ${customer.name}`;
+      this.contractModal.contract = {
+        ...customer.contracts[customer.contracts.length - 1],
+      };
+    }
+
+    this.contractModal.open(!!customer?.contracts?.length);
+  }
+
+  saveCustomer() {
+    this.customerService.addCustomer(this.selectedCustomer).subscribe(() => {
+      this.loadCustomers();
+    });
+  }
+
+  saveContract(params: { customerId: number; contract: Contract }) {
+    if (!params.customerId) {
+      console.error('ID do cliente não encontrado');
+      return;
+    }
+
+    if (params.contract.id) {
+      this.contractService
+        .updateContract(params.customerId, params.contract)
+        .subscribe(() => {
+          this.loadCustomers();
+        });
     } else {
-      this.customerService.addCustomer(customer).subscribe(() => {
-        this.loadCustomers();
-      });
+      this.contractService
+        .createContract(params.customerId, params.contract)
+        .subscribe(() => {
+          this.loadCustomers();
+        });
     }
   }
 

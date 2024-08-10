@@ -1,14 +1,19 @@
 <div class="customer-list-container">
   <app-customer-filter (filterChange)="onFilterChange($event)"></app-customer-filter>
   <po-button p-label="Adicionar Cliente" p-type="primary" (p-click)="openAddCustomerModal()"></po-button>
-  <app-customer-table [customers]="filteredCustomers" [columns]="columns" (edit)="openEditCustomerModal($event)"></app-customer-table>
+  <app-customer-table [customers]="filteredCustomers" (edit)="openEditCustomerModal($event)" (addContract)="openAddContractModal($event)"></app-customer-table>
 
   <app-customer-modal
-  #customerModal
-  [customer]="selectedCustomer"
-  [title]="customerModal.title"
-  (save)="saveCustomer($event)">
+    #customerModal
+    [customer]="selectedCustomer"
+    (save)="saveCustomer()">
   </app-customer-modal>
+
+  <app-customer-contract-modal
+    #contractModal
+    [customer]="selectedCustomer"
+    (saveContract)="saveContract($event)">
+  </app-customer-contract-modal>
 
   <app-confirm-modal #confirmDeleteModal></app-confirm-modal>
 </div>

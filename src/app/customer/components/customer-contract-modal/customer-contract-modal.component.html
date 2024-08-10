@@ -1,0 +1,31 @@
+<po-modal #modal p-title="{{ title }}">
+  <form>
+    <po-input p-label="Número do Contrato" (ngModelChange)="onInputChange()" [(ngModel)]="contract.number" name="contractNumber"></po-input>
+    <po-datepicker
+      p-label="Data de Aquisição"
+      [(ngModel)]="contract.acquisitionDate"
+      name="acquisitionDate"
+      (ngModelChange)="onInputChange()">
+    </po-datepicker>
+
+    <po-select
+      p-label="Status"
+      [p-options]="statusOptions"
+      name="status"
+      [ngModel]="contract.status"
+      (ngModelChange)="onInputChange()">
+    </po-select>
+
+    <po-number
+      p-label="Valor"
+      [(ngModel)]="contract.value"
+      name="value"
+      p-placeholder="Digite um número"
+      (ngModelChange)="onInputChange()">
+    </po-number>
+  </form>
+  <po-modal-footer>
+    <po-button [p-disabled]="saveDisabled" p-label="Salvar" p-type="primary" (p-click)="onSave()"></po-button>
+    <po-button p-label="Cancelar" p-type="default" (p-click)="onCancel()"></po-button>
+  </po-modal-footer>
+</po-modal>

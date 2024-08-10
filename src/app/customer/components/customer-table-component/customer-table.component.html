@@ -5,10 +5,14 @@
 
   <ng-template p-table-cell-template let-column="column" let-row="row">
     <p *ngIf="column.property === 'cpf_cnpj'">{{ formatCpfCnpj(row[column.property]) }}</p>
-    <p *ngIf="column.property === 'actions'">
-      <po-button p-icon="po-icon-edit" p-small p-type="default" (p-click)="onEdit(row)"></po-button>
-      <po-button p-icon="po-icon-delete" p-small p-type="danger" (p-click)="onDelete(row)"></po-button>
-    </p>
+    <p *ngIf="column.property === 'contract'">{{ getStatusLabel(row.contracts) }}</p>
+    <ng-container *ngIf="column.property === 'actions'">
+      <div class="po-row">
+        <po-button class="po-md-4" p-icon="po-icon-edit" p-small p-type="default" (p-click)="onEdit(row)"></po-button>
+        <po-button class="po-md-4" p-icon="po-icon-delete" p-small p-type="danger" (p-click)="onDelete(row)"></po-button>
+        <po-button [p-kind]="row.contracts?.length ? 'primary' : 'tertiary'" class="po-md-4" [p-label]="row.contracts?.length ? 'Visualizar contrato' : 'Adicionar contrato'" p-small p-type="success" (p-click)="onAddContract(row)"></po-button>
+      </div>
+    </ng-container>
   </ng-template>
 
 </po-table>

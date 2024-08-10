@@ -21,7 +21,10 @@ export class CustomerModalComponent {
   @Output() save = new EventEmitter<Customer>();
   @Output() cancel = new EventEmitter<void>();
 
-  open() {
+  open(customer?: Customer) {
+    this.customer = customer
+      ? { ...customer }
+      : { name: '', cpf_cnpj: '', phone: '' };
     this.modal.open();
   }
 
