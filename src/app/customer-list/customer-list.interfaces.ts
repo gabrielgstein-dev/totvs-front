@@ -8,6 +8,7 @@ export interface TableColumn {
     | 'time'
     | 'currency'
     | 'boolean'
+    | 'cellTemplate'
     | 'function';
   function?: (value: any) => string;
 }

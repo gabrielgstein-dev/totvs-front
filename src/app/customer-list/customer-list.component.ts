@@ -15,24 +15,23 @@ export class CustomerListComponent {
   @ViewChild('addCustomerModal')
   addCustomerModal!: PoModalComponent;
 
-  columns: TableColumn[];
+  columns: TableColumn[] = [
+    { property: 'name', label: 'Nome' },
+    {
+      property: 'cpf_cnpj',
+      label: 'CPF/CNPJ',
+      type: 'cellTemplate',
+    },
+    { property: 'phone', label: 'Número do Contrato' },
+  ];
+
   customers: Customer[] = [];
   newCustomer: Customer = { name: '', cpf_cnpj: '', phone: '' };
   filterTerm: string = '';
   status: ContractStatus = '' as ContractStatus;
+  formatCpfCnpj = formatCpfCnpj;
 
-  constructor(private customerService: CustomerService) {
-    this.columns = [
-      { property: 'name', label: 'Nome' },
-      {
-        property: 'cpf_cnpj',
-        label: 'CPF/CNPJ',
-        type: 'function',
-        function: formatCpfCnpj,
-      },
-      { property: 'phone', label: 'Número do Contrato' },
-    ];
-  }
+  constructor(private customerService: CustomerService) {}
 
   ngOnInit(): void {
     this.loadCustomers();
