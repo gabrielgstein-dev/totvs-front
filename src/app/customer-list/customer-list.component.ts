@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { PoModalComponent } from '@po-ui/ng-components';
+import { PoModalComponent, PoTableColumn } from '@po-ui/ng-components';
 import { Customer } from '../customer/customer.model';
 import { CustomerService } from '../customer/customer.service';
 import { ContractStatus } from '../shared/contract-status.enum';
 import { formatCpfCnpj } from '../shared/utils/formatCpfCnpj';
-import { TableColumn } from './customer-list.interfaces';
+
+import { ConfirmModalComponent } from '../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-customer-list',
@@ -15,7 +16,10 @@ export class CustomerListComponent {
   @ViewChild('addCustomerModal')
   addCustomerModal!: PoModalComponent;
 
-  columns: TableColumn[] = [
+  @ViewChild('confirmDeleteModal', { static: true })
+  confirmDeleteModal!: ConfirmModalComponent;
+
+  columns: PoTableColumn[] = [
     { property: 'name', label: 'Nome' },
     {
       property: 'cpf_cnpj',
@@ -23,6 +27,7 @@ export class CustomerListComponent {
       type: 'cellTemplate',
     },
     { property: 'phone', label: 'Número do Contrato' },
+    { property: 'actions', label: 'Ações', type: 'cellTemplate' },
   ];
 
   customers: Customer[] = [];
@@ -94,6 +99,25 @@ export class CustomerListComponent {
       complete: () => {
         console.log('Cliente adicionado com sucesso');
       },
+    });
+  }
+
+  openConfirmDeleteModal(customer: Customer) {
+    this.confirmDeleteModal.confirmLabel = 'Excluir';
+    this.confirmDeleteModal.danger = true;
+    this.confirmDeleteModal.onConfirm = () => this.deleteCustomer(customer);
+    this.confirmDeleteModal.onCancel = () => this.confirmDeleteModal.close();
+    this.confirmDeleteModal.open();
+  }
+
+  deleteCustomer(customer: Customer) {
+    if (!customer.id) {
+      console.error('ID do cliente não encontrado');
+      return;
+    }
+    this.customerService.deleteCustomer(customer.id).subscribe({
+      next: () => this.loadCustomers(),
+      error: (err) => console.error('Erro ao deletar cliente:', err),
     });
   }
 

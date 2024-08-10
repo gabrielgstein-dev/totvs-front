@@ -1,0 +1,8 @@
+<po-modal #confirmModal p-title="{{ title }}">
+  <p>{{ message }}</p>
+
+  <po-modal-footer>
+    <po-button p-label="{{ confirmLabel }}" p-type="danger" (p-click)="onConfirm()"></po-button>
+    <po-button p-label="{{ cancelLabel }}" p-type="default" (p-click)="onCancel()"></po-button>
+  </po-modal-footer>
+</po-modal>

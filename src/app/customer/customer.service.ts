@@ -26,8 +26,13 @@ export class CustomerService {
     return this.http.post<Customer>(this.apiUrl, customer);
   }
 
+  deleteCustomer(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
   private normalizeCustomer(customer: CustomerDTO): Customer {
     return {
+      id: customer.id,
       name: customer.name,
       phone: customer.phone,
       cpf_cnpj: customer.cpf || customer.cnpj || '',

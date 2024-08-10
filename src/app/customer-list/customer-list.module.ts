@@ -12,9 +12,10 @@ import {
   PoModalModule,
 } from '@po-ui/ng-components';
 import { CustomerListComponent } from './customer-list.component';
+import { ConfirmModalComponent } from '../shared/components/confirm-modal/confirm-modal.component';
 
 @NgModule({
-  declarations: [CustomerListComponent],
+  declarations: [CustomerListComponent, ConfirmModalComponent],
   imports: [
     CommonModule,
     FormsModule,

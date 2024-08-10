@@ -1,5 +1,4 @@
 export const formatCpfCnpj = (value: string): string => {
-  console.log('value', value);
   if (value.length === 11) {
     return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   } else if (value.length === 14) {
