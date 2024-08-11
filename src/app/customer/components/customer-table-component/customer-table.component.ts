@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { PoTableColumn } from '@po-ui/ng-components';
+import {
+  PoSearchFilterMode,
+  PoTableAction,
+  PoTableColumn,
+} from '@po-ui/ng-components';
 import { Customer } from '../../models/customer.model';
 import { formatCpfCnpj } from '../../../shared/utils/formatCpfCnpj';
 import { Contract } from '../../models/contract.model';
@@ -14,9 +18,37 @@ import {
 })
 export class CustomerTableComponent {
   @Input() customers: Customer[] = [];
+  @Input() tableLoading: boolean = false;
   @Output() confirmDelete = new EventEmitter<Customer>();
   @Output() edit = new EventEmitter<Customer>();
   @Output() addContract = new EventEmitter<Customer>();
+
+  actions: PoTableAction[] = [
+    {
+      label: 'Adicionar Contrato',
+      visible: (row: Customer) => {
+        return !row?.contracts?.length;
+      },
+      action: this.onAddContract.bind(this),
+    },
+    {
+      label: 'Visualizar Contrato',
+      visible: (row: Customer) => {
+        return !!row?.contracts?.length;
+      },
+
+      action: this.onAddContract.bind(this),
+    },
+    {
+      label: 'Editar',
+      action: this.onEdit.bind(this),
+    },
+    {
+      label: 'Excluir',
+      type: 'danger',
+      action: this.onDelete.bind(this),
+    },
+  ];
 
   columns: PoTableColumn[] = [
     { property: 'name', label: 'Nome' },
@@ -26,8 +58,12 @@ export class CustomerTableComponent {
       type: 'cellTemplate',
     },
     { property: 'phone', label: 'Telefone' },
+    {
+      property: 'contractNumber',
+      label: 'Número do contrato',
+      type: 'cellTemplate',
+    },
     { property: 'contract', label: 'Status', type: 'cellTemplate' },
-    { property: 'actions', label: 'Ações', type: 'cellTemplate' },
   ];
 
   formatCpfCnpj = formatCpfCnpj;
@@ -38,6 +74,17 @@ export class CustomerTableComponent {
     }
     const lastContract = contracts[contracts.length - 1];
     return contractStatusLabels[lastContract.status];
+  }
+
+  getContractNumber(contracts: Contract[]) {
+    if (!contracts.length) {
+      return 'Sem contrato';
+    }
+    return contracts[contracts.length - 1].number;
+  }
+
+  getFilterType() {
+    return PoSearchFilterMode.contains;
   }
 
   onEdit(customer: Customer) {

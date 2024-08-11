@@ -1,7 +1,14 @@
-<div class="customer-list-container">
-  <app-customer-filter (filterChange)="onFilterChange($event)"></app-customer-filter>
-  <po-button p-label="Adicionar Cliente" p-type="primary" (p-click)="openAddCustomerModal()"></po-button>
-  <app-customer-table [customers]="filteredCustomers" (edit)="openEditCustomerModal($event)" (addContract)="openAddContractModal($event)"></app-customer-table>
+<po-container>
+  <po-loading-overlay [hidden]="!isLoading"></po-loading-overlay>
+  <po-container class="po-row">
+    <div class="po-md-8">
+      <po-button p-label="Adicionar Cliente" p-type="primary" (p-click)="openAddCustomerModal()"></po-button>
+    </div>
+    <div class="po-md-4 po-offset-4">
+      <po-button-group class="po-md-12" p-toggle="single" [p-buttons]="buttonsFilter"> </po-button-group>
+    </div>
+  </po-container>
+  <app-customer-table [tableLoading]="isLoading" [customers]="filteredCustomers" (edit)="openEditCustomerModal($event)" (addContract)="openAddContractModal($event)"></app-customer-table>
 
   <app-customer-modal
     #customerModal
@@ -17,4 +24,4 @@
   </app-customer-contract-modal>
 
   <app-confirm-modal #confirmDeleteModal></app-confirm-modal>
-</div>
+</po-container>

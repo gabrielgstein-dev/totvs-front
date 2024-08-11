@@ -9,7 +9,6 @@ import { CustomerModalComponent } from './components/customer-modal/customer-mod
 import { CustomerContractModalComponent } from './components/customer-contract-modal/customer-contract-modal.component';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { CustomerFilterComponent } from './components/customer-filter/customer-filter.component';
 
 @NgModule({
   imports: [
@@ -22,7 +21,6 @@ import { CustomerFilterComponent } from './components/customer-filter/customer-f
   declarations: [
     CustomerListComponent,
     CustomerTableComponent,
-    CustomerFilterComponent,
     CustomerModalComponent,
     CustomerContractModalComponent,
   ],

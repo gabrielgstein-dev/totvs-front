@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { PoTableColumn } from '@po-ui/ng-components';
+import { PoButtonGroupItem, PoTableColumn } from '@po-ui/ng-components';
 import { CustomerService } from './services/customer.service';
 import { ContractService } from './services/contract.service';
 import { Customer } from './models/customer.model';
@@ -8,7 +8,10 @@ import { CustomerModalComponent } from './components/customer-modal/customer-mod
 import { CustomerContractModalComponent } from './components/customer-contract-modal/customer-contract-modal.component'; // Novo import
 import { ConfirmModalComponent } from '../shared/components/confirm-modal/confirm-modal.component';
 import { formatCpfCnpj } from '../shared/utils/formatCpfCnpj';
-import { ContractStatusEnum } from '../shared/contract-status';
+import {
+  ContractStatusEnum,
+  contractStatusLabels,
+} from '../shared/contract-status';
 
 @Component({
   selector: 'app-customer-list',
@@ -20,6 +23,7 @@ export class CustomerListComponent {
   @ViewChild('contractModal') contractModal!: CustomerContractModalComponent;
   @ViewChild('confirmDeleteModal') confirmDeleteModal!: ConfirmModalComponent;
 
+  isLoading: boolean = false;
   customers: Customer[] = [];
   selectedCustomer: Customer = { name: '', cpf_cnpj: '', phone: '' };
   selectedContract: Contract = {
@@ -30,6 +34,7 @@ export class CustomerListComponent {
   };
   filterTerm: string = '';
   filteredCustomers: Customer[] = [];
+  buttonStatusFilterSelected?: ContractStatusEnum;
 
   formatCpfCnpj = formatCpfCnpj;
 
@@ -42,10 +47,41 @@ export class CustomerListComponent {
     this.loadCustomers();
   }
 
-  loadCustomers() {
-    this.customerService.getCustomers().subscribe((data) => {
+  buttonsFilter = [
+    {
+      label: 'Todos',
+      action: this.loadCustomers.bind(this, undefined),
+      selected: true,
+    },
+    {
+      label: contractStatusLabels[ContractStatusEnum.ON_SCHEDULE],
+      action: this.loadCustomers.bind(this, ContractStatusEnum.ON_SCHEDULE),
+    },
+    {
+      label: contractStatusLabels[ContractStatusEnum.PAID_IN_FULL],
+      action: this.loadCustomers.bind(this, ContractStatusEnum.PAID_IN_FULL),
+    },
+    {
+      label: contractStatusLabels[ContractStatusEnum.PAST_DUE],
+      action: this.loadCustomers.bind(this, ContractStatusEnum.PAST_DUE),
+    },
+    {
+      label: contractStatusLabels[ContractStatusEnum.CANCELED],
+      action: this.loadCustomers.bind(this, ContractStatusEnum.CANCELED),
+    },
+  ];
+
+  loadCustomers(status?: ContractStatusEnum) {
+    this.isLoading = true;
+    this.buttonStatusFilterSelected = status;
+    console.log(
+      'this.buttonStatusFilterSelected',
+      this.buttonStatusFilterSelected
+    );
+    this.customerService.getCustomers(status).subscribe((data) => {
       this.customers = data;
       this.filteredCustomers = data;
+      this.isLoading = false;
     });
   }
 

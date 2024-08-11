@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { PoModule } from '@po-ui/ng-components';
+import { PoModule, PoContainerModule } from '@po-ui/ng-components';
 
-import { AppComponent } from './app.component';
 import { CustomerListModule } from './customer/customer-list.module';
 import { SharedModule } from './shared/shared.module';
 
@@ -14,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
     PoModule,
     CustomerListModule,
     SharedModule,
+    PoContainerModule,
   ],
   providers: [],
 })

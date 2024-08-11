@@ -35,11 +35,6 @@ export class CustomerContractModalComponent {
     contractId: number;
   }>();
 
-  contractStatus = {
-    label: 'Dentro do Prazo',
-    value: ContractStatusEnum.ON_SCHEDULE,
-  };
-
   statusOptions = [
     { label: 'Em Atraso', value: ContractStatusEnum.PAST_DUE },
     { label: 'Dentro do Prazo', value: ContractStatusEnum.ON_SCHEDULE },
@@ -68,8 +63,13 @@ export class CustomerContractModalComponent {
         this.contract.status === this.originalContract.status);
   }
 
+  onChangeStatus(status: ContractStatusEnum) {
+    this.originalContract.status = status;
+    this.onInputChange();
+  }
+
   hasContractDisabled() {
-    return this.originalContract.status === ContractStatusEnum.CANCELED;
+    return this.contract.status === ContractStatusEnum.CANCELED;
   }
 
   resetContract() {
@@ -80,6 +80,7 @@ export class CustomerContractModalComponent {
       status: ContractStatusEnum.ON_SCHEDULE,
     };
     this.originalContract = { ...this.contract };
+    this.originalContract.status = ContractStatusEnum.ON_SCHEDULE;
   }
 
   open(isEdit: boolean = false) {
@@ -92,12 +93,7 @@ export class CustomerContractModalComponent {
   }
 
   close() {
-    this.originalContract = {
-      acquisitionDate: '',
-      value: 0,
-      number: '',
-      status: ContractStatusEnum.ON_SCHEDULE,
-    };
+    this.resetContract();
     this.modal.close();
   }
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Customer, CustomerDTO } from '../models/customer.model';
+import { ContractStatusEnum } from '../../shared/contract-status';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +13,15 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {}
 
-  getCustomers(): Observable<Customer[]> {
+  getCustomers(status?: ContractStatusEnum): Observable<Customer[]> {
+    let params = new HttpParams();
+
+    if (status) {
+      params = params.set('status', status);
+    }
+
     return this.http
-      .get<CustomerDTO[]>(this.apiUrl)
+      .get<CustomerDTO[]>(this.apiUrl, { params })
       .pipe(
         map((customers) =>
           customers.map((customer) => this.normalizeCustomer(customer))
